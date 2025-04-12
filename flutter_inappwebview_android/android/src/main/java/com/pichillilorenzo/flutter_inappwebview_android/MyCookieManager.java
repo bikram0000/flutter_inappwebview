@@ -191,7 +191,10 @@ public class MyCookieManager extends ChannelDelegateImpl {
           result.success(successful);
         }
       });
-      cookieManager.flush();
+      new Thread(() -> {
+        cookieManager.flush();
+
+      }).start();
     }
     else if (plugin != null) {
       CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(plugin.applicationContext);
@@ -309,7 +312,10 @@ public class MyCookieManager extends ChannelDelegateImpl {
           result.success(successful);
         }
       });
-      cookieManager.flush();
+      new Thread(() -> {
+        cookieManager.flush();
+
+      }).start();
     }
     else if (plugin != null) {
       CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(plugin.applicationContext);
@@ -363,7 +369,10 @@ public class MyCookieManager extends ChannelDelegateImpl {
         cookieSyncMngr.stopSync();
         cookieSyncMngr.sync();
       } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        cookieManager.flush();
+        new Thread(() -> {
+          cookieManager.flush();
+
+        }).start();
     }
     result.success(true);
   }
@@ -382,7 +391,10 @@ public class MyCookieManager extends ChannelDelegateImpl {
           result.success(successful);
         }
       });
-      cookieManager.flush();
+      new Thread(() -> {
+        cookieManager.flush();
+
+      }).start();
     }
     else if (plugin != null) {
       CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(plugin.applicationContext);
@@ -411,7 +423,10 @@ public class MyCookieManager extends ChannelDelegateImpl {
           result.success(successful);
         }
       });
-      cookieManager.flush();
+      new Thread(() -> {
+        cookieManager.flush();
+
+      }).start();
     }
     else if (plugin != null) {
       CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(plugin.applicationContext);
@@ -433,7 +448,10 @@ public class MyCookieManager extends ChannelDelegateImpl {
       return;
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      cookieManager.flush();
+      new Thread(() -> {
+        cookieManager.flush();
+
+      }).start();
     } else if (plugin != null) {
       CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(plugin.applicationContext);
       cookieSyncMngr.sync();

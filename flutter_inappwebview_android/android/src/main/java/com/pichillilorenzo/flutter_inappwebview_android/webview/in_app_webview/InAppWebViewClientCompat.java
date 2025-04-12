@@ -69,7 +69,7 @@ public class InAppWebViewClientCompat extends WebViewClientCompat {
     this.inAppBrowserDelegate = inAppBrowserDelegate;
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  @androidx.annotation.RequiresApi(Build.VERSION_CODES.LOLLIPOP)
   @Override
   public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
     InAppWebView webView = (InAppWebView) view;
@@ -231,6 +231,7 @@ public class InAppWebViewClientCompat extends WebViewClientCompat {
     }
   }
 
+  @Override
   public void onPageFinished(WebView view, String url) {
     final InAppWebView webView = (InAppWebView) view;
     webView.isLoading = false;
@@ -245,11 +246,14 @@ public class InAppWebViewClientCompat extends WebViewClientCompat {
     }
 
     // WebView not storing cookies reliable to local device storage
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      CookieManager.getInstance().flush();
-    } else {
-      CookieSyncManager.getInstance().sync();
-    }
+    // Run cookie persistence in a background thread to prevent blocking the UI
+    new Thread(() -> {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        CookieManager.getInstance().flush();
+      } else {
+        CookieSyncManager.getInstance().sync();
+      }
+    }).start();
 
     String js = JavaScriptBridgeJS.PLATFORM_READY_JS_SOURCE();
     webView.evaluateJavascript(js, (ValueCallback<String>) null);
